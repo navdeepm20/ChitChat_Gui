@@ -21,6 +21,9 @@ public class ChapAppJavaG extends javax.swing.JFrame {
     String username = "";
     String portnum = "";
     String Ipaddress = "";
+    ServerSocket ssc;
+    Socket sc;
+    
     /**
      * Creates new form ChapAppJavaG
      */
@@ -49,6 +52,7 @@ public class ChapAppJavaG extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -56,10 +60,15 @@ public class ChapAppJavaG extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ChitChat V1.1");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setLayout(null);
 
         jPanel2.setBackground(new java.awt.Color(0, 204, 204));
 
@@ -78,7 +87,7 @@ public class ChapAppJavaG extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel3.setForeground(new java.awt.Color(36, 35, 35));
         jLabel3.setText("IP Address");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -87,6 +96,7 @@ public class ChapAppJavaG extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setForeground(new java.awt.Color(36, 35, 35));
         jLabel4.setText("Port Number");
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
@@ -96,6 +106,7 @@ public class ChapAppJavaG extends javax.swing.JFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(36, 35, 35));
         jLabel5.setText("Your Name");
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
@@ -108,6 +119,14 @@ public class ChapAppJavaG extends javax.swing.JFrame {
 
         jButton4.setBackground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Disconnect");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setForeground(new java.awt.Color(36, 35, 35));
+        jLabel6.setText("Not Chating with anyone");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -116,6 +135,7 @@ public class ChapAppJavaG extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextField1)
                     .addComponent(jTextField2)
                     .addComponent(jTextField3)
@@ -130,15 +150,15 @@ public class ChapAppJavaG extends javax.swing.JFrame {
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addGap(48, 48, 48)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -150,24 +170,35 @@ public class ChapAppJavaG extends javax.swing.JFrame {
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(27, 27, 27)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2))
+                .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(61, 61, 61))
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+
+        jPanel1.add(jPanel2);
+        jPanel2.setBounds(0, 0, 243, 422);
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(250, 150, 370, 100);
+
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
         jScrollPane2.setViewportView(jTextArea2);
+
+        jPanel1.add(jScrollPane2);
+        jScrollPane2.setBounds(250, 310, 312, 40);
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Send");
@@ -176,60 +207,42 @@ public class ChapAppJavaG extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton2);
+        jButton2.setBounds(570, 310, 57, 40);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Reply Received");
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(250, 120, 200, 28);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Your Messge");
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(250, 260, 109, 23);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addContainerGap(14, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(20, 20, 20))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        jLabel7.setText("Connection Status: Discoonnected");
+        jPanel1.add(jLabel7);
+        jLabel7.setBounds(250, 390, 390, 30);
+
+        jLabel8.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 2, 32)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 204, 204));
+        jLabel8.setText("    Chit Chat - Lets Chat");
+        jLabel8.setBorder(new javax.swing.border.MatteBorder(null));
+        jPanel1.add(jLabel8);
+        jLabel8.setBounds(240, 0, 400, 80);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
         );
 
         pack();
@@ -246,10 +259,12 @@ public class ChapAppJavaG extends javax.swing.JFrame {
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         // TODO add your handling code here:
         jRadioButton1.setSelected(false);
+        jTextField1.setEnabled(true);
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        
         if (jRadioButton1.isSelected())
         {
            new Thread(new Runnable()
@@ -258,14 +273,31 @@ public class ChapAppJavaG extends javax.swing.JFrame {
                {   
                    try
                     {
+                        if(jTextField3.getText()==null)
+                        {
+//                            throw new Exception("Name Field can't be empty");
+                            System.out.println("empty.....................");
+                        }
                         Ipaddress = jTextField1.getText();
-                        ServerSocket ssc = new ServerSocket(98);
-                        Socket sc = ssc.accept();
-                        cstatus = "Server says Connected";
-                        System.out.println(cstatus);
+                        ssc = new ServerSocket(98);
+                        sc = ssc.accept();
+                        cstatus = "Connected";
+                        statusVerifier(true);
+                        String username = jTextField3.getText();
+                        DataOutputStream out = new DataOutputStream(sc.getOutputStream());
+                        out.writeUTF(username);
+                        DataInputStream in = new DataInputStream(sc.getInputStream());
+                        String person2 = in.readUTF();
+                        System.out.println("  Connected to"+person2);
+                        jLabel6.setText("Connected to: "+person2);
                         
+                        
+                        jRadioButton1.setEnabled(false);
+                        jRadioButton2.setEnabled(false);
+                        jLabel7.setText("Connectinon Status: "+ cstatus);
                         
                     }
+                    
                    catch(Exception e)
                    {
                        JFrame jf = new JFrame("Error Occurred");
@@ -284,11 +316,27 @@ public class ChapAppJavaG extends javax.swing.JFrame {
                {   
                    try
                     {
+                        if(jTextField3.getText()=="")
+                        {
+                             System.out.println("empty.....................");
+                            throw new Exception("Name Field can't be empty");
+                        }
                         Ipaddress = jTextField1.getText();
-                        Socket ssc = new Socket(Ipaddress,98);
+                        sc = new Socket(Ipaddress,98);
+                        cstatus = "Connected";
+                        statusVerifier(true);
+                        String username = jTextField3.getText();
+                        DataInputStream in = new DataInputStream(sc.getInputStream());
+                        String person2 = in.readUTF();
+                        DataOutputStream out = new DataOutputStream(sc.getOutputStream());
+                        out.writeUTF(username);
+                        System.out.println("Connected to"+person2);
+                        jLabel6.setText("Connected to: "+person2);
                         
-                        cstatus = "Client says Connected";
-                        System.out.println(cstatus);
+                       
+                        jLabel7.setText("Connectinon Status: "+cstatus);
+                        jRadioButton1.setEnabled(false);
+                        jRadioButton2.setEnabled(false);
                         
                         
                     }
@@ -313,8 +361,73 @@ public class ChapAppJavaG extends javax.swing.JFrame {
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         // TODO add your handling code here:
         jRadioButton2.setSelected(false);
+        jTextField1.setEnabled(false);
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        if(jRadioButton1.isSelected())
+        {
+            new Thread(new Runnable()
+            {
+                public void run()
+                {
+                    try
+                    {
+                        ssc.close();
+                        cstatus = "Disconnected";
+                        statusVerifier(false);
+                        jLabel7.setText("Connection Status:"+cstatus);
+                        jRadioButton1.setEnabled(true);
+                        jRadioButton2.setEnabled(true);
+                    }
+                    catch(Exception ee)
+                    {
+                        JFrame jf = new JFrame("Message");
+                        JOptionPane.showMessageDialog(jf,ee);
+                    }
+                    
+                }
+            }).start();
+        }
+//        
+        if(jRadioButton2.isSelected())
+        {
+            new Thread(new Runnable()
+            {
+                public void run()
+                {
+                    try
+                    {
+                        sc.close();
+                        cstatus = "Disconnected";
+                        statusVerifier(false);
+                        jLabel7.setText("Connection Status:"+cstatus);
+                        jRadioButton1.setEnabled(true);
+                        jRadioButton2.setEnabled(true);
+                    }
+                    catch(Exception ee)
+                    {
+                        JFrame jf = new JFrame("Message");
+                        JOptionPane.showMessageDialog(jf,ee);
+                    }
+                    
+                }
+            }).start();
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+void statusVerifier(boolean status1)
+{
+    if(status1==false || cstatus=="Disconnected")
+    {
+        jButton4.setEnabled(false);
+        jTextArea1.setEnabled(false);
+    }
+    else if(status1==true|| cstatus=="Connected")
+            {
+                jButton4.setEnabled(true);
+            }
+}
     /**
      * @param args the command line arguments
      */
@@ -345,7 +458,12 @@ public class ChapAppJavaG extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ChapAppJavaG().setVisible(true);
+              ChapAppJavaG root = new ChapAppJavaG();
+              root.setVisible(true);
+              root.statusVerifier(false);
+              
+              
+                
             }
         });
     }
@@ -359,6 +477,9 @@ public class ChapAppJavaG extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JRadioButton jRadioButton1;

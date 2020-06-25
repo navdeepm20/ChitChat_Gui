@@ -1,0 +1,22 @@
+------------------------ChitChat_Changelog_V1(Developers)--------------------------
+
+Added:
+	connect , disconnect now working.
+	statusverifier function added.
+	addtional small code fixes and overall improvement and stability.
+
+Removed:
+	none
+	
+Deprecated:
+	none
+
+Fixed:
+	no known issues.
+
+Not Fixed:
+	when one end disconnected the other end status not changed.
+	chat functionality not added yet.
+
+Note -: This program is currently in developing mode may be you face some unknown bugs while running.
+
