@@ -16,13 +16,16 @@ import java.net.*;
  *
  * @author Navdeep Mishra
  */
-public class ChapAppJavaG extends javax.swing.JFrame {
-    String cstatus = "Disconnected";
+public class ChapAppJavaG extends javax.swing.JFrame 
+{
+    public static String cstatus = "Disconnected";
     String username = "";
     String portnum = "";
     String Ipaddress = "";
-    ServerSocket ssc;
-    Socket sc;
+    public static ServerSocket ssc;
+    public static Socket sc;
+    public static DataOutputStream out;
+    public static DataInputStream in;
     
     /**
      * Creates new form ChapAppJavaG
@@ -284,9 +287,9 @@ public class ChapAppJavaG extends javax.swing.JFrame {
                         cstatus = "Connected";
                         statusVerifier(true);
                         String username = jTextField3.getText();
-                        DataOutputStream out = new DataOutputStream(sc.getOutputStream());
+                        out = new DataOutputStream(sc.getOutputStream());
                         out.writeUTF(username);
-                        DataInputStream in = new DataInputStream(sc.getInputStream());
+                        in = new DataInputStream(sc.getInputStream());
                         String person2 = in.readUTF();
                         System.out.println("  Connected to"+person2);
                         jLabel6.setText("Connected to: "+person2);
@@ -295,8 +298,21 @@ public class ChapAppJavaG extends javax.swing.JFrame {
                         jRadioButton1.setEnabled(false);
                         jRadioButton2.setEnabled(false);
                         jLabel7.setText("Connectinon Status: "+ cstatus);
-                        
+                        String msgg;
+                        while(true)
+                        {
+                           msgg=in.readUTF();
+                           jTextArea1.setEnabled(true);
+                           System.out.println("server got this : " +msgg);
+                           jTextArea1.setText(msgg);
+                           jTextArea1.setEnabled(false);
+                        }
                     }
+                   catch(SocketException sc)
+                   {
+                       statusVerifier(false);
+                                          
+                   }
                     
                    catch(Exception e)
                    {
@@ -337,9 +353,26 @@ public class ChapAppJavaG extends javax.swing.JFrame {
                         jLabel7.setText("Connectinon Status: "+cstatus);
                         jRadioButton1.setEnabled(false);
                         jRadioButton2.setEnabled(false);
+                        String msgg;
+                        
+                        while(true)
+                        {
+                           msgg=in.readUTF();
+                           System.out.println("client got this : " +msgg);
+                           jTextArea1.setEnabled(true);
+                           
+                           jTextArea1.setText(msgg);
+                           jTextArea1.setEnabled(false);
+                        }
                         
                         
                     }
+                   
+                   catch(SocketException sc)
+                   {
+                       statusVerifier(false);
+                                          
+                   }
                    catch(Exception e)
                    {
                        JFrame jf = new JFrame("Error Occurred");
@@ -355,7 +388,33 @@ public class ChapAppJavaG extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-         
+        
+            new Thread(new Runnable()
+            {
+                public void run()
+                {
+//                  
+                    
+                    try
+                    {
+                        DataOutputStream out = new DataOutputStream(sc.getOutputStream());
+                        String msg = jTextArea2.getText();
+                        out.writeUTF(msg);
+                    }
+                    
+                    catch(Exception ee)
+                    {
+//                        JFrame jf  = new JFrame("Message");
+//                        JOptionPane.showMessageDialog(jf,ee);
+                        System.out.println(ee.getMessage());
+                          
+
+                    }
+                }
+            
+            }).start();
+            
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
@@ -422,12 +481,44 @@ void statusVerifier(boolean status1)
     {
         jButton4.setEnabled(false);
         jTextArea1.setEnabled(false);
+        jRadioButton1.setEnabled(true);
+        jRadioButton2.setEnabled(true);
     }
     else if(status1==true|| cstatus=="Connected")
             {
                 jButton4.setEnabled(true);
+                jRadioButton1.setEnabled(false);
+                jRadioButton2.setEnabled(false);
             }
 }
+void messageReader()
+{
+    new Thread(new Runnable()
+    {
+        public void run()
+        {
+            try
+            { 
+                String msg;
+                while(true)
+                {
+                   msg=in.readUTF();
+                   jTextArea1.setText(msg);
+                }
+                      
+            }
+            
+            catch(Exception ee)
+                {
+//                    JFrame jf = new JFrame("Messge");
+//                    JOptionPane.showMessageDialog(jf,ee);
+                      System.out.println(ee);
+                            
+                }
+            }
+        }).start();
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -461,6 +552,7 @@ void statusVerifier(boolean status1)
               ChapAppJavaG root = new ChapAppJavaG();
               root.setVisible(true);
               root.statusVerifier(false);
+//              root.messageReader();
               
               
                 
