@@ -19,13 +19,14 @@ import java.net.*;
 public class ChapAppJavaG extends javax.swing.JFrame 
 {
     public static String cstatus = "Disconnected";
-    String username = "";
-    String portnum = "";
+    static String person2 = "";
+    public static String username = "";
+    static int portnum = 0;
     String Ipaddress = "";
     public static ServerSocket ssc;
     public static Socket sc;
-    public static DataOutputStream out;
-    public static DataInputStream in;
+    public  DataOutputStream out;
+    public  DataInputStream in;
     
     /**
      * Creates new form ChapAppJavaG
@@ -228,12 +229,12 @@ public class ChapAppJavaG extends javax.swing.JFrame
         jLabel7.setBounds(250, 390, 390, 30);
 
         jLabel8.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel8.setFont(new java.awt.Font("Tahoma", 2, 32)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Times New Roman", 2, 30)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel8.setText("    Chit Chat - Lets Chat");
+        jLabel8.setText("        Chit Chat - Lets Chat");
         jLabel8.setBorder(new javax.swing.border.MatteBorder(null));
         jPanel1.add(jLabel8);
-        jLabel8.setBounds(240, 0, 400, 80);
+        jLabel8.setBounds(240, 0, 390, 80);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -262,7 +263,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         // TODO add your handling code here:
         jRadioButton1.setSelected(false);
-        jTextField1.setEnabled(true);
+        jTextField1.setEditable(true);
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -276,41 +277,70 @@ public class ChapAppJavaG extends javax.swing.JFrame
                {   
                    try
                     {
-                        if(jTextField3.getText()==null)
+                        if(jTextField3.getText().isEmpty())
                         {
-//                            throw new Exception("Name Field can't be empty");
+//                           
                             System.out.println("empty.....................");
+                            throw new Exception("Name Field can't be empty");
                         }
+                        if(jTextField2.getText().isEmpty())
+                        {
+                            throw new Exception("The Port Number Can't be Empty");
+                        }
+                        username = jTextField3.getText();
+                        portnum = Integer.parseInt(jTextField2.getText());
+                        System.out.println(username);
                         Ipaddress = jTextField1.getText();
-                        ssc = new ServerSocket(98);
+                        ssc = new ServerSocket(portnum);
                         sc = ssc.accept();
                         cstatus = "Connected";
-                        statusVerifier(true);
                         String username = jTextField3.getText();
                         out = new DataOutputStream(sc.getOutputStream());
                         out.writeUTF(username);
                         in = new DataInputStream(sc.getInputStream());
-                        String person2 = in.readUTF();
-                        System.out.println("  Connected to"+person2);
-                        jLabel6.setText("Connected to: "+person2);
+                        person2 = in.readUTF();
+                        statusVerifier(true);
+
+//                        System.out.println("  Connected to"+person2);
+//                        jLabel6.setText("Connected to: "+person2);
+//                        
+//                        
+//                        jRadioButton1.setEnabled(false);
+//                        jRadioButton2.setEnabled(false);
+//                        jLabel7.setText("Connectinon Status: "+ cstatus);
                         
-                        
-                        jRadioButton1.setEnabled(false);
-                        jRadioButton2.setEnabled(false);
-                        jLabel7.setText("Connectinon Status: "+ cstatus);
-                        String msgg;
-                        while(true)
+                                               new Thread(new Runnable()
                         {
-                           msgg=in.readUTF();
-                           jTextArea1.setEnabled(true);
-                           System.out.println("server got this : " +msgg);
-                           jTextArea1.setText(msgg);
-                           jTextArea1.setEnabled(false);
-                        }
+                            public void run()
+                            {  try
+                                {
+                                while(true)
+                                
+                                    {   
+                                        String msgg;
+                                         msgg=in.readUTF();
+                                         jTextArea1.setEditable(true);
+                                         System.out.println("server got this : " +msgg);
+                                         jTextArea1.append(person2+": "+msgg+"\n");
+                                         jTextArea1.setEditable(false);
+                                    }
+                                }
+                                catch(Exception ee)
+                                    {
+                                             JFrame jf = new JFrame("Message");
+                                             JOptionPane.showMessageDialog(jf,ee);
+                                    }
+                            }
+                            
+                        }).start();
+
+                        
                     }
                    catch(SocketException sc)
                    {
                        statusVerifier(false);
+                       JFrame jf = new JFrame("Error Occurred");
+                       JOptionPane.showMessageDialog(jf,sc);
                                           
                    }
                     
@@ -332,45 +362,76 @@ public class ChapAppJavaG extends javax.swing.JFrame
                {   
                    try
                     {
-                        if(jTextField3.getText()=="")
+                        if(jTextField3.getText().isEmpty())
                         {
-                             System.out.println("empty.....................");
+                            System.out.println("empty.....................");
                             throw new Exception("Name Field can't be empty");
                         }
+                        if(jTextField2.getText().isEmpty())
+                        {
+                            throw new Exception("The Port Number Can't be Empty");
+                        }
                         Ipaddress = jTextField1.getText();
-                        sc = new Socket(Ipaddress,98);
+                        portnum = Integer.parseInt(jTextField2.getText());
+                        sc = new Socket(Ipaddress,portnum);
                         cstatus = "Connected";
-                        statusVerifier(true);
+                        username = jTextField3.getText();
+                        System.out.println(username);
                         String username = jTextField3.getText();
                         DataInputStream in = new DataInputStream(sc.getInputStream());
-                        String person2 = in.readUTF();
+                        person2 = in.readUTF();
                         DataOutputStream out = new DataOutputStream(sc.getOutputStream());
                         out.writeUTF(username);
-                        System.out.println("Connected to"+person2);
-                        jLabel6.setText("Connected to: "+person2);
+                        statusVerifier(true);
+//                        System.out.println(Connected to"+person2);
                         
-                       
-                        jLabel7.setText("Connectinon Status: "+cstatus);
-                        jRadioButton1.setEnabled(false);
-                        jRadioButton2.setEnabled(false);
-                        String msgg;
-                        
-                        while(true)
+//                        jLabel6.setText("Connected to: "+person2);
+//                        
+//                       
+//                        jLabel7.setText("Connectinon Status: "+cstatus);
+//                        jRadioButton1.setEnabled(false);
+//                        jRadioButton2.setEnabled(false);
+                        String msgg;                      
+//                        while(true)
+//                        {
+//                           msgg=in.readUTF();
+//                           System.out.println("client got this : " +msgg);
+//                           jTextArea1.setEditable(true);
+//                           jTextArea1.setText(msgg);
+//                           jTextArea1.setEditable(false);
+//                        }
+                        new Thread(new Runnable()
                         {
-                           msgg=in.readUTF();
-                           System.out.println("client got this : " +msgg);
-                           jTextArea1.setEnabled(true);
-                           
-                           jTextArea1.setText(msgg);
-                           jTextArea1.setEnabled(false);
-                        }
-                        
-                        
+                            public void run()
+                            {  try
+                                {
+                                while(true)
+                                
+                                    {   
+                                        String msgg;
+                                         msgg=in.readUTF();
+                                         jTextArea1.setEditable(true);
+                                         System.out.println("server got this : " +msgg);
+                                         jTextArea1.append(person2+": "+msgg+"\n");
+                                         jTextArea1.setEditable(false);
+                                    }
+                                }
+                                catch(Exception ee)
+                                    {
+                                             JFrame jf = new JFrame("Message");
+                                             JOptionPane.showMessageDialog(jf,ee);
+                                    }
+                            }
+                            
+                        }).start();
+                      
                     }
                    
                    catch(SocketException sc)
                    {
                        statusVerifier(false);
+                       JFrame jf = new JFrame("Error Occurred");
+                       JOptionPane.showMessageDialog(jf,"Client Disconnected");
                                           
                    }
                    catch(Exception e)
@@ -399,14 +460,17 @@ public class ChapAppJavaG extends javax.swing.JFrame
                     {
                         DataOutputStream out = new DataOutputStream(sc.getOutputStream());
                         String msg = jTextArea2.getText();
+                        jTextArea2.setText("");
+                        jTextArea1.append(username+": "+msg+"\n");
+                        
                         out.writeUTF(msg);
                     }
                     
                     catch(Exception ee)
                     {
-//                        JFrame jf  = new JFrame("Message");
-//                        JOptionPane.showMessageDialog(jf,ee);
-                        System.out.println(ee.getMessage());
+                        JFrame jf  = new JFrame("Message");
+                        JOptionPane.showMessageDialog(jf,ee);
+//                        System.out.println(ee.getMessage());
                           
 
                     }
@@ -420,7 +484,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         // TODO add your handling code here:
         jRadioButton2.setSelected(false);
-        jTextField1.setEnabled(false);
+        jTextField1.setEditable(false);
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -436,9 +500,13 @@ public class ChapAppJavaG extends javax.swing.JFrame
                         ssc.close();
                         cstatus = "Disconnected";
                         statusVerifier(false);
-                        jLabel7.setText("Connection Status:"+cstatus);
-                        jRadioButton1.setEnabled(true);
-                        jRadioButton2.setEnabled(true);
+//                        jLabel7.setText("Connection Status:"+cstatus);
+                        
+                    }
+                    catch(EOFException ee)
+                    {
+                        JFrame jf = new JFrame("Message");
+                        JOptionPane.showMessageDialog(jf,"Eof errrorr");
                     }
                     catch(Exception ee)
                     {
@@ -461,14 +529,16 @@ public class ChapAppJavaG extends javax.swing.JFrame
                         sc.close();
                         cstatus = "Disconnected";
                         statusVerifier(false);
-                        jLabel7.setText("Connection Status:"+cstatus);
-                        jRadioButton1.setEnabled(true);
-                        jRadioButton2.setEnabled(true);
+//                        jLabel7.setText("Connection Status:"+cstatus)
+                        
+                        
                     }
+                    
                     catch(Exception ee)
                     {
                         JFrame jf = new JFrame("Message");
                         JOptionPane.showMessageDialog(jf,ee);
+                        
                     }
                     
                 }
@@ -480,15 +550,36 @@ void statusVerifier(boolean status1)
     if(status1==false || cstatus=="Disconnected")
     {
         jButton4.setEnabled(false);
-        jTextArea1.setEnabled(false);
+        jButton3.setEnabled(true);
         jRadioButton1.setEnabled(true);
         jRadioButton2.setEnabled(true);
+        jTextField1.setEditable(true);
+        jTextField2.setEditable(true);
+        jTextField3.setEditable(true);
+        jLabel6.setText(cstatus);
+        jLabel7.setText("Connection Status: "+cstatus);
+        jLabel6.setText("Disconnected");
+        jTextArea1.setText("");
+        jTextArea2.setText("");
+        jTextField2.setEditable(true);
+        jTextArea1.setEditable(false);
+        
+        
     }
     else if(status1==true|| cstatus=="Connected")
             {
+//                
                 jButton4.setEnabled(true);
+                jButton3.setEnabled(false);
                 jRadioButton1.setEnabled(false);
                 jRadioButton2.setEnabled(false);
+                jTextField1.setEditable(false);
+                jTextField2.setEditable(false);
+                jTextField3.setEditable(false);
+                jLabel6.setText("Connected to: "+person2);
+                System.out.println("This is person two: " +person2);
+                jLabel7.setText("Connection Status: "+cstatus);
+                jTextField2.setEditable(false);
             }
 }
 void messageReader()
@@ -585,3 +676,7 @@ void messageReader()
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
+
+/* we have to fix the eofexceptions and socket exception
+   we have to fix connection miss and program stucked.
+*/
