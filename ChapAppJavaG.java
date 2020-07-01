@@ -22,11 +22,11 @@ public class ChapAppJavaG extends javax.swing.JFrame
     static String person2 = "";
     public static String username = "";
     static int portnum = 0;
-    String Ipaddress = "";
+    static String  Ipaddress = "";
     public static ServerSocket ssc;
     public static Socket sc;
-    public  DataOutputStream out;
-    public  DataInputStream in;
+    public  static DataOutputStream out;
+    public  static DataInputStream in;
     
     /**
      * Creates new form ChapAppJavaG
@@ -94,6 +94,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
         jLabel3.setForeground(new java.awt.Color(36, 35, 35));
         jLabel3.setText("IP Address");
 
+        jTextField1.setText("localhost");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -280,36 +281,34 @@ public class ChapAppJavaG extends javax.swing.JFrame
                         if(jTextField3.getText().isEmpty())
                         {
 //                           
-                            System.out.println("empty.....................");
+                           
                             throw new Exception("Name Field can't be empty");
                         }
                         if(jTextField2.getText().isEmpty())
                         {
                             throw new Exception("The Port Number Can't be Empty");
                         }
+                        if(jTextField1.getText().isEmpty())
+                        {
+                            throw new Exception("IpAddress field can't be Emptj");
+                            
+                        }
                         username = jTextField3.getText();
                         portnum = Integer.parseInt(jTextField2.getText());
-                        System.out.println(username);
+//                        System.out.println(username);
                         Ipaddress = jTextField1.getText();
                         ssc = new ServerSocket(portnum);
                         sc = ssc.accept();
                         cstatus = "Connected";
-                        String username = jTextField3.getText();
+                        
                         out = new DataOutputStream(sc.getOutputStream());
                         out.writeUTF(username);
                         in = new DataInputStream(sc.getInputStream());
                         person2 = in.readUTF();
                         statusVerifier(true);
 
-//                        System.out.println("  Connected to"+person2);
-//                        jLabel6.setText("Connected to: "+person2);
-//                        
-//                        
-//                        jRadioButton1.setEnabled(false);
-//                        jRadioButton2.setEnabled(false);
-//                        jLabel7.setText("Connectinon Status: "+ cstatus);
-                        
-                                               new Thread(new Runnable()
+//                      
+                        new Thread(new Runnable()
                         {
                             public void run()
                             {  try
@@ -319,16 +318,30 @@ public class ChapAppJavaG extends javax.swing.JFrame
                                     {   
                                         String msgg;
                                          msgg=in.readUTF();
+                                         System.out.println(msgg);
                                          jTextArea1.setEditable(true);
-                                         System.out.println("server got this : " +msgg);
+                                        
                                          jTextArea1.append(person2+": "+msgg+"\n");
                                          jTextArea1.setEditable(false);
                                     }
+                                }
+                                catch(SocketException ee)
+                                {
+                                    JFrame jf = new JFrame("Message");
+                                    JOptionPane.showMessageDialog(jf,"You've Ended the Chat");
+                                }
+                                catch(EOFException ee)
+                                {
+                                    JFrame jf = new JFrame("Message");
+                                    JOptionPane.showMessageDialog(jf,person2+" Has Ended the Chat");
+                                    cstatus = "Disconnected";
+                                    statusVerifier(false);
                                 }
                                 catch(Exception ee)
                                     {
                                              JFrame jf = new JFrame("Message");
                                              JOptionPane.showMessageDialog(jf,ee);
+//                                             ee.printStackTrace();
                                     }
                             }
                             
@@ -336,11 +349,12 @@ public class ChapAppJavaG extends javax.swing.JFrame
 
                         
                     }
-                   catch(SocketException sc)
+                   catch(SocketException se)
                    {
                        statusVerifier(false);
                        JFrame jf = new JFrame("Error Occurred");
-                       JOptionPane.showMessageDialog(jf,sc);
+                       JOptionPane.showMessageDialog(jf,se);
+//                       se.printStackTrace();
                                           
                    }
                     
@@ -348,6 +362,8 @@ public class ChapAppJavaG extends javax.swing.JFrame
                    {
                        JFrame jf = new JFrame("Error Occurred");
                        JOptionPane.showMessageDialog(jf,e);
+//                       e.printStackTrace();
+                       
                        
                    }
                    
@@ -364,42 +380,33 @@ public class ChapAppJavaG extends javax.swing.JFrame
                     {
                         if(jTextField3.getText().isEmpty())
                         {
-                            System.out.println("empty.....................");
+                            
                             throw new Exception("Name Field can't be empty");
                         }
                         if(jTextField2.getText().isEmpty())
                         {
                             throw new Exception("The Port Number Can't be Empty");
                         }
+                        if(jTextField1.getText().isEmpty())
+                        {
+                            throw new Exception("IpAddress field can't be Emptj");
+                            
+                        }
                         Ipaddress = jTextField1.getText();
                         portnum = Integer.parseInt(jTextField2.getText());
                         sc = new Socket(Ipaddress,portnum);
                         cstatus = "Connected";
                         username = jTextField3.getText();
-                        System.out.println(username);
-                        String username = jTextField3.getText();
+//                        System.out.println(username);
+                        
                         DataInputStream in = new DataInputStream(sc.getInputStream());
                         person2 = in.readUTF();
                         DataOutputStream out = new DataOutputStream(sc.getOutputStream());
                         out.writeUTF(username);
                         statusVerifier(true);
-//                        System.out.println(Connected to"+person2);
-                        
-//                        jLabel6.setText("Connected to: "+person2);
-//                        
-//                       
-//                        jLabel7.setText("Connectinon Status: "+cstatus);
-//                        jRadioButton1.setEnabled(false);
-//                        jRadioButton2.setEnabled(false);
+//                     
                         String msgg;                      
-//                        while(true)
-//                        {
-//                           msgg=in.readUTF();
-//                           System.out.println("client got this : " +msgg);
-//                           jTextArea1.setEditable(true);
-//                           jTextArea1.setText(msgg);
-//                           jTextArea1.setEditable(false);
-//                        }
+//                 
                         new Thread(new Runnable()
                         {
                             public void run()
@@ -411,15 +418,32 @@ public class ChapAppJavaG extends javax.swing.JFrame
                                         String msgg;
                                          msgg=in.readUTF();
                                          jTextArea1.setEditable(true);
-                                         System.out.println("server got this : " +msgg);
+                                         System.out.println("client got this : " +msgg);
                                          jTextArea1.append(person2+": "+msgg+"\n");
                                          jTextArea1.setEditable(false);
                                     }
                                 }
+                                catch(EOFException ee)
+                                {
+                                    JFrame jf = new JFrame("Message");
+                                    JOptionPane.showMessageDialog(jf,person2+" Has Ended the Chat");
+//                                    ee.printStackTrace();
+                                    cstatus="Disconnected";
+                                    statusVerifier(false);
+                                }
+                                 catch(SocketException se)
+                                    {
+                                        statusVerifier(false);
+                                        JFrame jf = new JFrame("Error Occurred");
+                                        JOptionPane.showMessageDialog(jf,"You have Ended the Chat");
+//                                        se.printStackTrace();
+
+                                    }
                                 catch(Exception ee)
                                     {
                                              JFrame jf = new JFrame("Message");
                                              JOptionPane.showMessageDialog(jf,ee);
+//                                             ee.printStackTrace();
                                     }
                             }
                             
@@ -427,19 +451,22 @@ public class ChapAppJavaG extends javax.swing.JFrame
                       
                     }
                    
-                   catch(SocketException sc)
+                   catch(SocketException se)
                    {
                        statusVerifier(false);
                        JFrame jf = new JFrame("Error Occurred");
-                       JOptionPane.showMessageDialog(jf,"Client Disconnected");
+                       JOptionPane.showMessageDialog(jf,se);
+//                       se.printStackTrace();
                                           
                    }
-                   catch(Exception e)
-                   {
-                       JFrame jf = new JFrame("Error Occurred");
-                       JOptionPane.showMessageDialog(jf,e);
-                       
-                   }
+                  
+                   catch(Exception ee)
+                    {
+                        JFrame jf  = new JFrame("Message");
+                        JOptionPane.showMessageDialog(jf,ee);
+//                        ee.printStackTrace();
+
+                    }
                    
                }
            }).start();
@@ -448,7 +475,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+       
         
             new Thread(new Runnable()
             {
@@ -466,12 +493,18 @@ public class ChapAppJavaG extends javax.swing.JFrame
                         out.writeUTF(msg);
                     }
                     
+                    
+                     catch(EOFException ee)
+                    {
+                        JFrame jf = new JFrame("Message");
+                        JOptionPane.showMessageDialog(jf,"Eof errrorr......................");
+//                        ee.printStackTrace();
+                    }
                     catch(Exception ee)
                     {
                         JFrame jf  = new JFrame("Message");
                         JOptionPane.showMessageDialog(jf,ee);
-//                        System.out.println(ee.getMessage());
-                          
+//                        ee.printStackTrace();
 
                     }
                 }
@@ -488,7 +521,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+      
         if(jRadioButton1.isSelected())
         {
             new Thread(new Runnable()
@@ -497,21 +530,26 @@ public class ChapAppJavaG extends javax.swing.JFrame
                 {
                     try
                     {
+                        
                         ssc.close();
+                        sc.close();
+                        
                         cstatus = "Disconnected";
                         statusVerifier(false);
-//                        jLabel7.setText("Connection Status:"+cstatus);
+//                       
                         
                     }
                     catch(EOFException ee)
                     {
                         JFrame jf = new JFrame("Message");
-                        JOptionPane.showMessageDialog(jf,"Eof errrorr");
+                        JOptionPane.showMessageDialog(jf,"Eof errrorr in disconnect button");
+//                        ee.printStackTrace();
                     }
                     catch(Exception ee)
                     {
                         JFrame jf = new JFrame("Message");
-                        JOptionPane.showMessageDialog(jf,ee);
+                        JOptionPane.showMessageDialog(jf,"server Disconnected button");
+//                        ee.printStackTrace();
                     }
                     
                 }
@@ -526,18 +564,25 @@ public class ChapAppJavaG extends javax.swing.JFrame
                 {
                     try
                     {
+                       
                         sc.close();
                         cstatus = "Disconnected";
-                        statusVerifier(false);
-//                        jLabel7.setText("Connection Status:"+cstatus)
                         
+                        statusVerifier(false);
+//                       
                         
                     }
-                    
+                    catch(EOFException ee)
+                    {
+                        JFrame jf = new JFrame("Message");
+                        JOptionPane.showMessageDialog(jf,"Eof errrorr in disconnect button");
+//                        ee.printStackTrace();
+                    }
                     catch(Exception ee)
                     {
                         JFrame jf = new JFrame("Message");
-                        JOptionPane.showMessageDialog(jf,ee);
+                        JOptionPane.showMessageDialog(jf,"client Disconnected button");
+//                        ee.printStackTrace();
                         
                     }
                     
@@ -559,8 +604,7 @@ void statusVerifier(boolean status1)
         jLabel6.setText(cstatus);
         jLabel7.setText("Connection Status: "+cstatus);
         jLabel6.setText("Disconnected");
-        jTextArea1.setText("");
-        jTextArea2.setText("");
+        
         jTextField2.setEditable(true);
         jTextArea1.setEditable(false);
         
@@ -568,7 +612,8 @@ void statusVerifier(boolean status1)
     }
     else if(status1==true|| cstatus=="Connected")
             {
-//                
+                jTextArea1.setText("");
+                jTextArea2.setText("");  
                 jButton4.setEnabled(true);
                 jButton3.setEnabled(false);
                 jRadioButton1.setEnabled(false);
@@ -582,33 +627,6 @@ void statusVerifier(boolean status1)
                 jTextField2.setEditable(false);
             }
 }
-void messageReader()
-{
-    new Thread(new Runnable()
-    {
-        public void run()
-        {
-            try
-            { 
-                String msg;
-                while(true)
-                {
-                   msg=in.readUTF();
-                   jTextArea1.setText(msg);
-                }
-                      
-            }
-            
-            catch(Exception ee)
-                {
-//                    JFrame jf = new JFrame("Messge");
-//                    JOptionPane.showMessageDialog(jf,ee);
-                      System.out.println(ee);
-                            
-                }
-            }
-        }).start();
-    }
 
     /**
      * @param args the command line arguments
@@ -643,7 +661,7 @@ void messageReader()
               ChapAppJavaG root = new ChapAppJavaG();
               root.setVisible(true);
               root.statusVerifier(false);
-//              root.messageReader();
+
               
               
                 
@@ -677,6 +695,8 @@ void messageReader()
     // End of variables declaration//GEN-END:variables
 }
 
-/* we have to fix the eofexceptions and socket exception
-   we have to fix connection miss and program stucked.
+/* 
+ we have to fix send working after disconnect.
+ we have to fix resize and disable it.
+ we have to fix address in use after disconnect.
 */
