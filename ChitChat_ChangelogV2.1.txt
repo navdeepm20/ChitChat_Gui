@@ -1,0 +1,26 @@
+------------------------ChitChat_Changelog_V2.1--------------------------
+
+Added:
+	Icon added for the program.
+	Minor code adjustment and improvements.
+
+
+Removed:
+	none
+	
+Deprecated:
+	none
+
+Fixed:
+	can't connect to same port now fixed.
+	other error fixed
+	send button not work if application is disconnected.
+	resize problem fixed.
+	minor bug fixed.
+
+Not Fixed:
+	none
+	
+Note From Developer (Navdeep Mishra)
+Note -: This program is Developed By Navdeep Mishra. You may face some unknown bugs and issues. Please report them to the Developer.
+

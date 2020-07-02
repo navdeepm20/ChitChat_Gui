@@ -16,23 +16,24 @@ import java.net.*;
  *
  * @author Navdeep Mishra
  */
-public class ChapAppJavaG extends javax.swing.JFrame 
+public class ChitChatApp extends javax.swing.JFrame 
 {
     public static String cstatus = "Disconnected";
     static String person2 = "";
     public static String username = "";
     static int portnum = 0;
     static String  Ipaddress = "";
-    public static ServerSocket ssc;
-    public static Socket sc;
+    public static ServerSocket ssc = null;
+    public static Socket sc = null;
     public  static DataOutputStream out;
     public  static DataInputStream in;
     
     /**
      * Creates new form ChapAppJavaG
      */
-    public ChapAppJavaG() {
+    public ChitChatApp() {
         initComponents();
+        seticon();
     }
 
     /**
@@ -68,13 +69,21 @@ public class ChapAppJavaG extends javax.swing.JFrame
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("ChitChat V1.1");
+        setTitle("ChitChat V2.1 by Navdeep Mishra");
+        setMaximumSize(new java.awt.Dimension(632, 417));
+        setMinimumSize(new java.awt.Dimension(632, 417));
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setMaximumSize(new java.awt.Dimension(632, 417));
+        jPanel1.setMinimumSize(new java.awt.Dimension(632, 417));
         jPanel1.setLayout(null);
 
         jPanel2.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel2.setMaximumSize(new java.awt.Dimension(300, 422));
+        jPanel2.setMinimumSize(new java.awt.Dimension(300, 422));
+        jPanel2.setPreferredSize(new java.awt.Dimension(300, 422));
 
         jRadioButton1.setText("Host");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -156,7 +165,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -189,7 +198,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
         );
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 0, 243, 422);
+        jPanel2.setBounds(0, 0, 240, 420);
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -200,6 +209,11 @@ public class ChapAppJavaG extends javax.swing.JFrame
 
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
+        jTextArea2.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jTextArea2PropertyChange(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTextArea2);
 
         jPanel1.add(jScrollPane2);
@@ -241,9 +255,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,9 +307,10 @@ public class ChapAppJavaG extends javax.swing.JFrame
                         }
                         username = jTextField3.getText();
                         portnum = Integer.parseInt(jTextField2.getText());
-//                        System.out.println(username);
+//                       
                         Ipaddress = jTextField1.getText();
                         ssc = new ServerSocket(portnum);
+                       
                         sc = ssc.accept();
                         cstatus = "Connected";
                         
@@ -318,7 +331,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
                                     {   
                                         String msgg;
                                          msgg=in.readUTF();
-                                         System.out.println(msgg);
+                                         
                                          jTextArea1.setEditable(true);
                                         
                                          jTextArea1.append(person2+": "+msgg+"\n");
@@ -341,7 +354,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
                                     {
                                              JFrame jf = new JFrame("Message");
                                              JOptionPane.showMessageDialog(jf,ee);
-//                                             ee.printStackTrace();
+//                                           
                                     }
                             }
                             
@@ -395,13 +408,14 @@ public class ChapAppJavaG extends javax.swing.JFrame
                         Ipaddress = jTextField1.getText();
                         portnum = Integer.parseInt(jTextField2.getText());
                         sc = new Socket(Ipaddress,portnum);
+                        
                         cstatus = "Connected";
                         username = jTextField3.getText();
-//                        System.out.println(username);
+//                       
                         
-                        DataInputStream in = new DataInputStream(sc.getInputStream());
+                        in = new DataInputStream(sc.getInputStream());
                         person2 = in.readUTF();
-                        DataOutputStream out = new DataOutputStream(sc.getOutputStream());
+                        out = new DataOutputStream(sc.getOutputStream());
                         out.writeUTF(username);
                         statusVerifier(true);
 //                     
@@ -418,7 +432,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
                                         String msgg;
                                          msgg=in.readUTF();
                                          jTextArea1.setEditable(true);
-                                         System.out.println("client got this : " +msgg);
+//                                        
                                          jTextArea1.append(person2+": "+msgg+"\n");
                                          jTextArea1.setEditable(false);
                                     }
@@ -454,6 +468,8 @@ public class ChapAppJavaG extends javax.swing.JFrame
                    catch(SocketException se)
                    {
                        statusVerifier(false);
+                      
+                      
                        JFrame jf = new JFrame("Error Occurred");
                        JOptionPane.showMessageDialog(jf,se);
 //                       se.printStackTrace();
@@ -485,12 +501,23 @@ public class ChapAppJavaG extends javax.swing.JFrame
                     
                     try
                     {
-                        DataOutputStream out = new DataOutputStream(sc.getOutputStream());
-                        String msg = jTextArea2.getText();
-                        jTextArea2.setText("");
-                        jTextArea1.append(username+": "+msg+"\n");
-                        
-                        out.writeUTF(msg);
+                        if(cstatus == "Connected")
+                        {     
+                            
+                            out = new DataOutputStream(sc.getOutputStream());
+                            String msg = jTextArea2.getText();
+                            if(msg.isEmpty())
+                            {
+//                              
+                            }
+                            else
+                            {
+                                jTextArea2.setText("");
+                                jTextArea1.append(username+": "+msg+"\n");
+                                out.writeUTF(msg);
+                            }
+                            
+                        }
                     }
                     
                     
@@ -504,7 +531,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
                     {
                         JFrame jf  = new JFrame("Message");
                         JOptionPane.showMessageDialog(jf,ee);
-//                        ee.printStackTrace();
+                        ee.printStackTrace();
 
                     }
                 }
@@ -535,27 +562,26 @@ public class ChapAppJavaG extends javax.swing.JFrame
                         sc.close();
                         
                         cstatus = "Disconnected";
-                        statusVerifier(false);
-//                       
+                        statusVerifier(false);                       
                         
                     }
                     catch(EOFException ee)
                     {
                         JFrame jf = new JFrame("Message");
                         JOptionPane.showMessageDialog(jf,"Eof errrorr in disconnect button");
-//                        ee.printStackTrace();
+
                     }
                     catch(Exception ee)
                     {
                         JFrame jf = new JFrame("Message");
                         JOptionPane.showMessageDialog(jf,"server Disconnected button");
-//                        ee.printStackTrace();
+//                       ee.printStackTrace();
                     }
                     
                 }
             }).start();
         }
-//        
+      
         if(jRadioButton2.isSelected())
         {
             new Thread(new Runnable()
@@ -569,7 +595,7 @@ public class ChapAppJavaG extends javax.swing.JFrame
                         cstatus = "Disconnected";
                         
                         statusVerifier(false);
-//                       
+                      
                         
                     }
                     catch(EOFException ee)
@@ -590,28 +616,66 @@ public class ChapAppJavaG extends javax.swing.JFrame
             }).start();
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextArea2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTextArea2PropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextArea2PropertyChange
 void statusVerifier(boolean status1)
 {
-    if(status1==false || cstatus=="Disconnected")
+    if(status1==false && cstatus=="Disconnected")
     {
-        jButton4.setEnabled(false);
-        jButton3.setEnabled(true);
-        jRadioButton1.setEnabled(true);
-        jRadioButton2.setEnabled(true);
-        jTextField1.setEditable(true);
-        jTextField2.setEditable(true);
-        jTextField3.setEditable(true);
-        jLabel6.setText(cstatus);
-        jLabel7.setText("Connection Status: "+cstatus);
-        jLabel6.setText("Disconnected");
+       try
+       {
+           if(jRadioButton1.isSelected())
+           {
+            jButton4.setEnabled(false);
+            jButton3.setEnabled(true);
+            jRadioButton1.setEnabled(true);
+            jRadioButton2.setEnabled(true);
+            jTextField1.setEditable(true);
+            jTextField2.setEditable(true);
+            jTextField3.setEditable(true);
+            jLabel6.setText(cstatus);
+            jLabel7.setText("Connection Status: "+cstatus);
+            jLabel6.setText("Disconnected");
+            jButton2.setEnabled(false);
+            jTextField2.setEditable(true);
+            jTextArea1.setEditable(false);
+            ssc.close();
+            sc.close();
+           }
+           if(jRadioButton2.isSelected())
+           {
+               jButton4.setEnabled(false);
+            jButton3.setEnabled(true);
+            jRadioButton1.setEnabled(true);
+            jRadioButton2.setEnabled(true);
+            jTextField1.setEditable(true);
+            jTextField2.setEditable(true);
+            jTextField3.setEditable(true);
+            jLabel6.setText(cstatus);
+            jLabel7.setText("Connection Status: "+cstatus);
+            jLabel6.setText("Disconnected");
+            jButton2.setEnabled(false);
+            jTextField2.setEditable(true);
+            jTextArea1.setEditable(false);
+            
+            sc.close();
+           }
+        }
+        catch (Exception ee)
+        {
+            JFrame jf = new JFrame("Error");
+            JOptionPane.showMessageDialog(jf,ee);
+            ee.printStackTrace();
+        }
         
-        jTextField2.setEditable(true);
-        jTextArea1.setEditable(false);
         
         
     }
-    else if(status1==true|| cstatus=="Connected")
+    else if(status1==true && cstatus=="Connected")
             {
+                jButton2.setEnabled(true);
                 jTextArea1.setText("");
                 jTextArea2.setText("");  
                 jButton4.setEnabled(true);
@@ -626,6 +690,40 @@ void statusVerifier(boolean status1)
                 jLabel7.setText("Connection Status: "+cstatus);
                 jTextField2.setEditable(false);
             }
+    
+}
+void firsttimestatusverifier(boolean status2)
+{
+    if(status2 == false && cstatus=="Disconnected")
+    {
+        try
+        {
+            jButton4.setEnabled(false);
+            jButton3.setEnabled(true);
+            jRadioButton1.setEnabled(true);
+            jRadioButton2.setEnabled(true);
+            jTextField1.setEditable(true);
+            jTextField2.setEditable(true);
+            jTextField3.setEditable(true);
+            jLabel6.setText(cstatus);
+            jLabel7.setText("Connection Status: "+cstatus);
+            jLabel6.setText("Disconnected");
+            jButton2.setEnabled(false);
+            jTextField2.setEditable(true);
+            jTextArea1.setEditable(false);  
+        
+        }
+        catch (Exception ee)
+        {
+            JFrame jf = new JFrame("Error");
+            JOptionPane.showMessageDialog(jf,ee);
+            ee.printStackTrace();
+        }
+    }
+}
+void seticon()
+{
+    setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png"))); //for setting icon
 }
 
     /**
@@ -645,22 +743,23 @@ void statusVerifier(boolean status1)
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChapAppJavaG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChitChatApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChapAppJavaG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChitChatApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChapAppJavaG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChitChatApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChapAppJavaG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChitChatApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-              ChapAppJavaG root = new ChapAppJavaG();
+              ChitChatApp root = new ChitChatApp();
               root.setVisible(true);
-              root.statusVerifier(false);
+              root.firsttimestatusverifier(false);
 
               
               
@@ -695,8 +794,6 @@ void statusVerifier(boolean status1)
     // End of variables declaration//GEN-END:variables
 }
 
-/* 
- we have to fix send working after disconnect.
- we have to fix resize and disable it.
- we have to fix address in use after disconnect.
+/*
+Created and Managed by Navdeep Mishra
 */
