@@ -10,7 +10,8 @@
 <img src="https://img.shields.io/badge/Language-Java-blue">
 <img src="https://img.shields.io/badge/Platform-Windows-brightgreen">
 <img src="https://img.shields.io/badge/GUI-Java Swing-blueviolet">
-<img src="https://img.shields.io/badge/Version%20-2.1-ff69b4">
+<img src="https://img.shields.io/badge/Version-2.1-ff69b4">
+<img src="https://img.shields.io/badge/IDE-Netbeans_11.3-34baeb"
 
 </p>
 
@@ -26,6 +27,7 @@
   
   
  </p>
+
  
  # How to Get Started?
  
@@ -41,6 +43,11 @@
  > - Enter the same port number in both instances of application.<br>
  > - After that click on connect button on both the application.<br>
  > - When it shows connected, just type your messages and send it using the send button.
+ 
+ # Other Info
+ > - The Gui of this application is designed in Netbeans IDE 11.3 from Scratch.
+ > - The Logic of the Complete Program is Created by Me <i>(Navdeep Mishra)</i> from scratch.
+ 
  
  <h3>If you face any unknown error or bug please inform me</h3>
  <h3>Contribute to this project to improve this. Lot's of new features can be implemented in this.</h3>
