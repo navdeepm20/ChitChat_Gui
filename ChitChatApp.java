@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.sql.*;
+
 import java.net.*;
 
 
@@ -269,7 +269,7 @@ public class ChitChatApp extends javax.swing.JFrame
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         
-        if (jRadioButton1.isSelected())
+        if (jRadioButton1.isSelected())                   //Connect funcitonality for the host.
         {
            new Thread(new Runnable()
            {
@@ -370,7 +370,7 @@ public class ChitChatApp extends javax.swing.JFrame
                }
            }).start();
         }
-        if (jRadioButton2.isSelected())
+        if (jRadioButton2.isSelected())          //connect functionality for the client
         {
             new Thread(new Runnable()
            {
@@ -480,7 +480,7 @@ public class ChitChatApp extends javax.swing.JFrame
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        
         
-            new Thread(new Runnable()
+            new Thread(new Runnable()       //sends the message
             {
                 public void run()
                 {
@@ -536,7 +536,7 @@ public class ChitChatApp extends javax.swing.JFrame
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
       
-        if(jRadioButton1.isSelected())
+        if(jRadioButton1.isSelected())                      //Disconnect Function if host option selected
         {
             new Thread(new Runnable()
             {
@@ -569,7 +569,7 @@ public class ChitChatApp extends javax.swing.JFrame
             }).start();
         }
       
-        if(jRadioButton2.isSelected())
+        if(jRadioButton2.isSelected())                     //Disconnect Function if client option selected
         {
             new Thread(new Runnable()
             {
@@ -607,8 +607,8 @@ public class ChitChatApp extends javax.swing.JFrame
     private void jTextArea2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTextArea2PropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextArea2PropertyChange
-void statusVerifier(boolean status1)
-{
+void statusVerifier(boolean status1)                        //One of the most important funciton which verifies the status that the application 
+{                                                           //connected or disconnected and perform the some gui operations.
     if(status1==false && cstatus=="Disconnected")
     {
        try
@@ -679,8 +679,8 @@ void statusVerifier(boolean status1)
             }
     
 }
-void firsttimestatusverifier(boolean status2)
-{
+void firsttimestatusverifier(boolean status2)           //This function disables some option when the gui is started. So that user can start the 
+{                                                       // application without encountering any bug.
     if(status2 == false && cstatus=="Disconnected")
     {
         try
@@ -739,9 +739,9 @@ void seticon()
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-              ChitChatApp root = new ChitChatApp();
-              root.setVisible(true);
-              root.firsttimestatusverifier(false);
+              ChitChatApp root = new ChitChatApp();  //initializing the main gui
+              root.setVisible(true);                   //making it visible
+              root.firsttimestatusverifier(false);    // verify the status of the app for the first time.
 
               
               
