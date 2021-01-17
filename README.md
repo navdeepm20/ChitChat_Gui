@@ -45,7 +45,7 @@
  > - When it shows connected, just type your messages and send it using the send button.
  
  # Other Info
- > - The Gui of this application is designed in Netbeans IDE 11.3 from Scratch.
+ > - The Gui of this application is designed in Netbeans IDE 11.3 gui builder from Scratch.
  > - The Logic of the Complete Program is Created by Me <i>(Navdeep Mishra)</i> from scratch.
  
  
