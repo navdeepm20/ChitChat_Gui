@@ -46,7 +46,7 @@
  
  # Other Info
  > - The Gui of this application is designed in Netbeans IDE 11.3 gui builder from Scratch.
- > - The Logic of the Complete Program is Created by Me <i>(Navdeep Mishra)</i> from scratch.
+ > - The Internal Functioning of the Program is Created by Me <i>(Navdeep Mishra)</i>
  
  
  <h3>If you face any unknown error or bug please inform me</h3>
