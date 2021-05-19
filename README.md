@@ -45,8 +45,8 @@
  > - When it shows connected, just type your messages and send it using the send button.
  
  # Other Info
- > - The Gui of this application is designed in Netbeans IDE 11.3 gui builder(Drag and Drop) from scratch.
- > - The Internal Components Functionality and Coupling of the Application is done by Me <i>(Navdeep Mishra)</i>
+ > - The Gui of this application is designed in Netbeans IDE 11.3 gui builder from scratch.
+ > - The internal components functionality is Wlwritten by Me <i>(Navdeep Mishra)</i>
  
  
  <h3>If you face any unknown error or bug please inform me</h3>
